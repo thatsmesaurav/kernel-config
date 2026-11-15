@@ -1,0 +1,2 @@
+mv /boot/dtbs/qcom/x1e80100-lenovo-yoga-slim7x.dtb /boot/dtbs/qcom/x1e80100-lenovo-yoga-slim7x.dtb.bak
+cp /usr/src/linux/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dtb /boot/dtbs/qcom/x1e80100-lenovo-yoga-slim7x.dtb
