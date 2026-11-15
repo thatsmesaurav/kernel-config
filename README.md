@@ -14,7 +14,6 @@ One tag per kernel version. Compare with `git diff 7.3.3 7.3.4 -- defconfig`.
 | `boot/grub.default` | `/etc/default/grub` (cmdline lives here) |
 | `boot/dracut.conf.d/` | firmware + early drivers for the initramfs |
 | `boot/postinst.d/` | copies the yoga-slim7x DTB into `/boot/dtbs` after install |
-| `patches/` | locally carried patches (see below) |
 | `scripts/snapshot.sh` | refresh everything above from the live system |
 | `scripts/kernel-debug-config.sh` | enables lockup detectors / pstore / GPU crash state |
 
@@ -53,10 +52,10 @@ Elsewhere:
 
 ## Patches
 
-| Patch | Status |
-|---|---|
-| `i2c-qcom-geni-restore-clk-sel.patch` | Backport of upstream 8cb5c17be3a2. Fixes the dead keyboard/touchpad from cb97bf3d4f91. Already in the 7.3.x trees. Keep it for reference. |
-| `tsens-drop-init.patch` | Drops `__init` from `tsens.c:init_common()`. Present in all 7.3.x trees here; check whether that's upstream or hand-applied before relying on it. |
+None. 7.3.4 is stock gentoo-sources (verified with `qcheck sys-kernel/gentoo-sources`).
+If a kernel patch is ever needed, put it in
+`/etc/portage/patches/sys-kernel/gentoo-sources/` so it is reapplied on every emerge,
+not hand-applied to `/usr/src`, where a re-emerge silently drops it.
 
 ## History
 
