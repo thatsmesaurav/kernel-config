@@ -1,7 +1,7 @@
 #!/bin/sh
 # Build + install the kernel tree you're standing in, then record it in this repo.
 #
-#   emerge -1 =sys-kernel/gentoo-sources-X.Y.Z     # you do this part
+#   emerge -uDN @world                             # pulls the new gentoo-sources
 #   cd /usr/src/linux-X.Y.Z-gentoo
 #   /home/saurav/kernel-config/scripts/kernel-update.sh [-y]
 #

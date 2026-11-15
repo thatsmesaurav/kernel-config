@@ -23,7 +23,7 @@ One tag per kernel version. Compare with `git diff 7.3.3 7.3.4 -- defconfig`.
 New kernel, as root:
 
 ```sh
-emerge -1 =sys-kernel/gentoo-sources-X.Y.Z
+emerge -uDN @world            # new gentoo-sources lands in its own /usr/src dir
 cd /usr/src/linux-X.Y.Z-gentoo
 /home/saurav/kernel-config/scripts/kernel-update.sh
 ```
