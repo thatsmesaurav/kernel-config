@@ -14,16 +14,26 @@ One tag per kernel version. Compare with `git diff 7.3.3 7.3.4 -- defconfig`.
 | `boot/grub.default` | `/etc/default/grub` (cmdline lives here) |
 | `boot/dracut.conf.d/` | firmware + early drivers for the initramfs |
 | `boot/postinst.d/` | copies the yoga-slim7x DTB into `/boot/dtbs` after install |
+| `scripts/kernel-update.sh` | build + install the tree you're in, snapshot, commit, tag, push |
 | `scripts/snapshot.sh` | refresh everything above from the live system |
 | `scripts/kernel-debug-config.sh` | enables lockup detectors / pstore / GPU crash state |
 
 ## Updating
 
+New kernel, as root:
+
 ```sh
-scripts/snapshot.sh            # reads /usr/src/linux, writes into the repo
-git diff
-git commit -am "7.3.5-gentoo" && git tag 7.3.5
+emerge -1 =sys-kernel/gentoo-sources-X.Y.Z
+cd /usr/src/linux-X.Y.Z-gentoo
+/home/saurav/kernel-config/scripts/kernel-update.sh
 ```
+
+It seeds `.config` from this repo if the tree has none, lists new symbols and asks
+before taking their defaults (`-y` skips the prompt), runs `eselect kernel set`,
+builds, runs `modules_install` and `make install` (dracut, grub, DTB hook), then commits, tags
+and pushes the result as the repo owner.
+
+To snapshot without building: `scripts/snapshot.sh`, then commit and tag yourself.
 
 The script runs kconfig's `conf` directly with srctree pointed at the root-owned
 tree, so it needs no root and writes nothing into `/usr/src`.
