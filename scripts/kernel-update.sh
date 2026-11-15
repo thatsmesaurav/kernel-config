@@ -3,7 +3,7 @@
 #
 #   emerge -uDN @world                             # pulls the new gentoo-sources
 #   cd /usr/src/linux-X.Y.Z-gentoo
-#   kernel-update   # symlink in /usr/local/sbin -> /home/saurav/workspace/kernel-config/scripts/kernel-update.sh [-y]
+#   kernel-update [-y]    # /usr/local/sbin symlink -> this script
 #
 # Run as root. -y skips the "new symbols, continue?" prompt.
 # JOBS=N overrides the default of -j10.
