@@ -25,7 +25,7 @@ New kernel, as root:
 ```sh
 emerge -uDN @world            # new gentoo-sources lands in its own /usr/src dir
 cd /usr/src/linux-X.Y.Z-gentoo
-/home/saurav/kernel-config/scripts/kernel-update.sh
+kernel-update   # symlink in /usr/local/sbin -> /home/saurav/workspace/kernel-config/scripts/kernel-update.sh
 ```
 
 It seeds `.config` from this repo if the tree has none, lists new symbols and asks
