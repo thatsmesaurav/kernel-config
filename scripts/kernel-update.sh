@@ -2,7 +2,8 @@
 # Build + install the kernel tree you're standing in, then record it in this repo.
 #
 #   emerge -uDN @world                             # pulls the new gentoo-sources
-#   cd /usr/src/linux-X.Y.Z-gentoo
+#   eselect kernel set linux-X.Y.Z-gentoo
+#   cd /usr/src/linux
 #   kernel-update [-y]    # /usr/local/sbin symlink -> this script
 #
 # Run as root. -y skips the "new symbols, continue?" prompt.
@@ -19,8 +20,11 @@ die() { echo "kernel-update: $*" >&2; exit 1; }
 [ -f Kconfig ] && [ -f Makefile ] && grep -q '^PATCHLEVEL' Makefile || die "not in a kernel source tree"
 
 SRC=$(pwd -P)
-NAME=$(basename "$SRC")
 ver=$(make -s kernelversion)
+
+# The DTB hook copies from /usr/src/linux, so it must point at this tree.
+[ "$(readlink -f /usr/src/linux)" = "$SRC" ] ||
+    die "/usr/src/linux -> $(readlink -f /usr/src/linux), not $SRC; run eselect kernel set first"
 
 # 1. Config: keep an existing .config, otherwise start from the last tracked one.
 if [ -f .config ]; then
@@ -40,15 +44,12 @@ if [ -n "$new" ]; then
 fi
 make -s olddefconfig
 
-# 2. /usr/src/linux must point here before 'make install' (the DTB hook copies from it).
-eselect kernel set "$NAME"
-
-# 3. Build and install. make install -> installkernel -> dracut + grub + DTB hook.
+# 2. Build and install. make install -> installkernel -> dracut + grub + DTB hook.
 make -j"$JOBS"
 make -j"$JOBS" modules_install
 make install
 
-# 4. Record it. Git runs as the repo owner, so root never owns files in the repo.
+# 3. Record it. Git runs as the repo owner, so root never owns files in the repo.
 echo ">> snapshotting into $REPO"
 runuser -u "$OWNER" -- "$REPO/scripts/snapshot.sh" "$SRC"
 cd "$REPO"

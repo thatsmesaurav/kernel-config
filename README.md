@@ -24,14 +24,16 @@ New kernel, as root:
 
 ```sh
 emerge -uDN @world            # new gentoo-sources lands in its own /usr/src dir
-cd /usr/src/linux-X.Y.Z-gentoo
+eselect kernel set linux-X.Y.Z-gentoo
+cd /usr/src/linux
 kernel-update   # symlink in /usr/local/sbin -> /home/saurav/workspace/kernel-config/scripts/kernel-update.sh
 ```
 
-It seeds `.config` from this repo if the tree has none, lists new symbols and asks
-before taking their defaults (`-y` skips the prompt), runs `eselect kernel set`,
-builds, runs `modules_install` and `make install` (dracut, grub, DTB hook), then commits, tags
-and pushes the result as the repo owner.
+It refuses to run unless `/usr/src/linux` points at the tree (the DTB hook copies
+from it). Then it seeds `.config` from this repo if the tree has none, lists new
+symbols and asks before taking their defaults (`-y` skips the prompt), builds, runs
+`modules_install` and `make install` (dracut, grub, DTB hook), and commits, tags and
+pushes the result as the repo owner.
 
 To snapshot without building: `scripts/snapshot.sh`, then commit and tag yourself.
 
